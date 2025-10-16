@@ -535,12 +535,68 @@ with $f^{n_j}(x) \in B_Y(x,1/j)$. Then $\lim_{j \to \infty} f^{n_j}(x) =x$.
 %(It is easy to fix things so that $n_j$ is increasing.)
 \end{proof}
 
-Here is any easy example of a minimal system.
+A minimal system has a very strong recurrence property. We show it in two steps.
+
+\begin{theorem}[Recurrence with bounded gaps: pointwise]
+Let $(X,f)$ be minimal. Let $U\subset X$ be non-empty and open. Let $x\in U$. Then there exists some integer $0<k_x<\infty$ such that for all integer $t$, $\{f^{t}(x),\dots,f^{t+k}(x)\}\cap U\neq\emptyset.$
+\end{theorem}
+\begin{proof}
+    If there is no such $k$, then for any $N>0$, we can find some integer $t_N$ such that
+    \[
+    f^{t_N-N}(x),\dots,f^{t_N+N}(x)
+    \]
+    are not in $U$. Let $x_N=f^{t_N}(x).$ Due to the compactness, we take a limit point of such $x_N$ for $N\to\infty$. Without loss of generality, we can assume that
+    \[
+    \lim_{N\to\infty} x_N=x_\infty\in X.
+    \]
+    Consider the orbit $\mathcal{O}_f(x_\infty)$. Let $K$ be an arbitrarily fixed integer. Consider $f^{K}(x_\infty).$ Due to the continuity of $f$ and $f^{-1}$, we see that
+    \[
+    f^{K}(x_\infty)=\lim_{N\to\infty} f^{K}(x_N).
+    \]
+    Then for any $\varepsilon>0$, there is some arbitrarily large $N$ so that
+    \[
+    f^{K}(x_N)\in B(f^{K}(x_\infty),\varepsilon).
+    \]
+    Suppose that $f^{K}(x_\infty)\in U$. Then we can take $\varepsilon>0$ so small that $B(f^{K}(x_\infty),\varepsilon)\subset U.$ This implies that $f^{K}(x_N)\in U$ which cannot be the case if $N$ is large enough. Thus $f^{K}(x_\infty)\not\in U$. Since $K$ is arbitrary, we see that $\mathcal{O}_f(x_\infty)\cap U=\emptyset$. This contradicts the minimality.
+\end{proof}
+
+A further compactness argument can help us get rid of the dependence of $k_x$ on $x$.
+
+\begin{theorem}[Recurrence with bounded gaps: uniform]
+Let $(X,f)$ be minimal. Let $U\subset X$ be non-empty and open. Then there exists some integer $0<k<\infty$ such that for any $x\in U$,  for all integer $t$, $\{f^{t}(x),\dots,f^{t+k}(x)\}\cap U\neq\emptyset.$
+\end{theorem}
+\begin{remark}
+The gap $k$ depends on the choice of $U$, and this dependency cannot be dropped.
+\end{remark}
+\begin{proof}
+    Suppose that no such $k$ can be found. Then for any $N>0$, we can find $x_N\in U$ and some $t_N\in \mathbb{Z}$ such that
+    \[
+    f^{t_N-N}(x_N),\dots,f^{t_N+N}(x_N)
+    \]
+    are not in $U$. We consider 
+    \[
+    y_N=f^{t_N}(x_N).
+    \]
+    Then consider $y_\infty=\lim_{N\to\infty} x_N$ as we did previously. Then $\mathcal{O}_f(y_\infty)$ is not dense because it misses $U$ (same argument as before). From here, we establish the result. 
+\end{proof}
+
+
+Here is an easy example of a minimal system.
 
 \begin{proposition}
 $(\mathbb T,R_\alpha)$ is minimal if and only if $\alpha$ is irrational.
 \end{proposition}
-
+\begin{remark}
+    From the proof, we in fact establish the property that for some $c>0$, there are infinitely many $q$ with
+    \[
+    d(q\alpha,0)<c/q.
+    \]
+    Following a more standard convention, we write $d(x,0)=\|x\|$ as the distance from $x$ and the set of integers. Then we have
+    \[
+    \|q\alpha\|<\frac{c}{q}
+    \]
+    for infinitely many integers $q.$ This is known as the Dirichlet theorem on Diophantine approximation. It is known, for example, if $\alpha=\sqrt{2}$, then $c$ cannot be chosen to be arbitrarily small. It is also known, due to Khinchin, that for a Lebesgue generic $\alpha$, $c$ can be chosen to be arbitrarily small. It is not known, however, whether or not for $\alpha=2^{1/3}$, $c$ can be chosen to be arbitrarily small.
+\end{remark}
 \begin{proof} It is convenient to use additive notation.
 Suppose $\alpha = p/q$ is rational. Then $R_\alpha^q(x)=x$ for all $x\in X$, so, in particular, $R_\alpha$ is not
 minimal.
@@ -1066,10 +1122,10 @@ The following concept will turn out to be important.
 
 \begin{definition}
 Let $(X,d)$ be a compact metric space.
-A homeomorphism $f : X \to X$ is {\it expansive} if there exists $\delta>0$ such that if $x,y \in X$
+A homeomorphism $f : X \to X$ is {\it expansive} if there exists $\delta>0$ which can be arbitrarily small such that if $x,y \in X$
 satisfies
 $d(f^n(x),f^n(y)) \le \delta$ for all $n \in \mathbb Z$ then $x=y$.
-(Alternative formulation: there exists $\delta>0$ such that if $x,y \in X$ and $x \ne y$ then there exists $n \in \mathbb Z$ with $d(f^n(x),f^n(y))>\delta$.) We call $\delta$ an {\it expansive constant} for $f$.
+(Alternative formulation: there exists $\delta>0$ such that if $x,y \in X$ and $x \ne y$ then there exists $n \in \mathbb Z$ with $d(f^n(x),f^n(y))>\delta$. We call $\delta$ an {\it expansive constant} for $f$.) 
 \end{definition}
 
 One immediately observes that a circle rotation (in fact, any isometry)  cannot
