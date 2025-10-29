@@ -5,7 +5,7 @@
 \def\myfont{\fontfamily{cmss}\selectfont}
 
 \usepackage{fancyhdr, amsmath, amssymb, amsfonts, url, subfigure, dsfont, mathrs
-fs, graphicx, epsfig, subfigure, amsthm, manfnt, tikz}
+fs, graphicx, epsfig, subfigure, amsthm, manfnt, tikz, comment}
 \usepackage{cmbright}
 \usepackage[T1]{fontenc}
 \usepackage{enumerate}
@@ -1080,7 +1080,7 @@ Given a finite collection of open covers $\alpha_1,\ldots,\alpha_m$, we write
 \]
 Notice that these new objects are themselves open covers.
 
-\begin{lemma}
+\begin{lemma}\label{lma: generator}
 Let $f :X \to X$ be a homeomorphism of a compact metric space
 $(X,d)$ and let $\alpha$ be a generator for $f$.
 Then, for all $\epsilon>0$, there exists $N 
@@ -1228,9 +1228,235 @@ $d(f^n(x),f^n(y)) \le \delta$ for all $n \ge 0$ then $x=y$.
 
 A similar body of results holds for positively expansive maps as for expansive maps. In particular, it is an invariant of topological conjugacy.
 
+Expansivity and positive expansivity are quite different. In fact, homeomorphic dynamics cannot be positively expansive, i.e. positively expansive systems cannot be invertible.
+
+\begin{theorem}
+    Let $(X,f)$ be an invertible topological dynamical system such that $X$ is infinite. Then for each $\delta>0$, there are pairs $(x,y)$ of different points so that $d(f^n(x),f^n(y))\leq\delta$ for any $n\in\mathbb{N}$.
+\end{theorem}
+\begin{proof}
+    Let $\delta>0$. Let $x,y\in X$ with $d(x,y)\geq \delta$. Let $N_{x,y}$ be the set of positive integers so that
+    \[
+    d(f^n(x),f^n(y))\leq \delta
+    \]
+    for $1\leq n\leq N_{x,y}.$ Let $N=\sup_{x,y}N_{x,y}.$ Two cases can occur.
+
+    \textbf{Case $N=\infty$:} We can find an increasing sequence $N_j\to\infty$ and points $x_j,y_j$ so that
+    \[
+    d(x_j,y_j)\geq \delta
+    \]
+    and for all $1\leq n\leq N_j,$
+    \[
+    d(f^n(x_j),f^n(y_j))\leq \delta.
+    \]
+    We take $x_\infty,y_\infty$ as limits points of $x_j,y_j$, resp. Then
+    \[
+    d(x_\infty,y_\infty)\geq \delta>0.
+    \]
+    In particular, $x_\infty\neq y_\infty.$ Compactness argument also tells us that
+    \[
+    d(f^n(x_\infty),f^{n}(y_\infty))\geq \delta
+    \]
+    for all $n\geq 1$. Then $f(x_\infty)\neq f(y_\infty)$ and they stay $\delta$-close for all positive iterations.
+
+    \textbf{Case $N<\infty$:} Apply Lemma \ref{lma: generator} (or Lebesgue covering lemma), we see that for some sufficiently small $\varepsilon>0$ which is smaller than $\delta$, as long as $d(x,y)\leq \varepsilon$, $d(f^n(x),f^{n}(y))\leq \delta$ for all $0\leq n\leq N$. Consider $f^{-1}(x),f^{-1}(y).$ If the distance between them is $\geq \delta$, then we see that $N\geq N+1$ which is not possible. Thus $d(f^{-1}(x),f^{-1}(y))\leq \delta.$ From here, we see that in fact $d(f^{-n}(x),f^{-n}(y))\leq \delta$ for all $n\geq 0.$ Let $x_n=f^{-n}(x),y_n=f^{-n}(y).$ We saw that
+    \[
+    d(f^k(x_n),f^{k}(y_n))\leq \delta
+    \]
+    for all $0\leq k\leq n+N$. We would want to take limit points $x_\infty,y_\infty$, but we have to make sure that the limit points are distinct. 
+
+    First, we cover $X$ with finitely many balls of size $\varepsilon$. Due to the compactness, this is achievable. Let $L$ be the number of balls used in this covering. Let us denote this covering by $\alpha$. For each $n\geq 0$, let $\varepsilon_n$ be the smallest diameter of sets in $f^{-n}(\alpha).$ Suppose that $\varepsilon_n\to 0.$ Then we see that $X$ can be covered by $L$ many open sets with diameter at most $\varepsilon_n$ for all $n$. Thus we can find $w^n_1,\dots,w^n_L$ so that the union of $\varepsilon_n$-balls centred there covers $X$. We take limit points of $w^n_1,\dots,w^n_L$ and find that $X$ is a finite set with at most $L$ points. This is not possible.
+
+    Thus, we conclude that for some $\eta>0,$ all $\varepsilon_n\geq \eta.$ Thus, we can find $x_n,y_n$ such that $d(x_n,y_n)\geq \eta$ and $d(f^n(x_n),f^n(y_n))\leq \varepsilon.$ We saw that this implies that $d(f^k(x_n),f^k(y_n))\leq \delta$ for all $0\leq k\leq N+n$. We can now take limit points $x_\infty,y_\infty$ which satisfy $d(x_\infty,y_\infty)\geq \eta>0$ and $d(f^n(x_\infty),f^n(y_\infty))\leq \delta$ for all $n\geq 0$. 
+\end{proof}
+
+\subsection{Topological entropy}
+Topological entropy is a topological invariant which measures the complexity of a system.
+
+\begin{definition}
+    Let $(X,f)$ be a system where $f$ is a continuous map. (We do not assume that it is invertible.) Let $x,y\in X$. Let $n\geq 0$ be an integer. We define
+    \[
+    d_n(x,y)=\max_{0\leq k\leq n} d(f^k(x),f^k(y)).
+    \]
+\end{definition}
+Thus, to say that $d_n(x,y)\leq \delta$ is to say that $x,y$ stay $\delta$-close up to the $n$-th iteration under the transformation $f$.
+\begin{definition}
+     Let $(X,f)$ be a system where $f$ is a continuous map. Let $n\geq 0$ be an integer. Let $\varepsilon>0.$ Let $C(n,\varepsilon)$ be smallest amount of open sets in $X$ with $d_n$-diameter at most $\varepsilon$ that covers $X$.
+\end{definition}
+The fact that $C(n,\varepsilon)$ is finite is due to the compactness of $X$ and $d_n(.,.)$ is a metric regarding the topology. 
+
+\begin{definition}
+     Let $(X,f)$ be a system where $f$ is a continuous map. The topological entropy $h_f$, is
+     \[
+     h_f=\lim_{\varepsilon\to 0}\lim_{n\to\infty} \frac{\log C(n,\varepsilon)}{n}
+     \]
+\end{definition}
+There are many equivalent definitions of $h_f$. For example, let $n,\varepsilon$ be as in the definition. Instead of $C(n,\varepsilon)$, we consider $S(n,\varepsilon)$, which is the smallest cardinality of $A\subset X$ so that any $x\in X$ can be paired with some $a\in A$ with
+\[
+d_n(x,a)\leq \varepsilon.
+\]
+We say that $A$ is an $(n,\varepsilon)$-spanning set. The equivalence is due to the simple fact that
+\[
+C(n,2\varepsilon)\leq S(n,\varepsilon)\leq C(n,\varepsilon).
+\]
+\begin{proof}[Proof of this simple fact]
+Let $\sigma$ be an open cover achieving the cardinality $C(n,\varepsilon)$. We can choose one point each in any set in $\sigma$. We obtain a set $A$. For any $x\in X$, there is some $c\in \sigma$ so that $x\in c$. Since the $d_n$-diameter of $c$ is at most $\varepsilon$, we see that for any $y\in c$, 
+\[
+d_n(y,x)\leq \varepsilon.
+\]
+In particular, $y$ can be the element in $A\cap c$. This shows that $A$ is $(n,\varepsilon)$-spanning. Therefore $S(n,\varepsilon)\leq C(n,\varepsilon).$
+
+Now, let $A$ be an $(n,\varepsilon)$-spanning set achieving the cardinality $S(n,\varepsilon).$ We can consider the $\varepsilon$-balls w.r.t. $d_n$ centred at each point in $A$. Those balls have diameters at most $2\varepsilon$. We claim that the union of those balls is the whole space. Indeed, let $x\in X$. Then there is some $a\in A$ such that
+\[
+d_n(x,a)\leq \varepsilon.
+\]
+This is saying that $x\in B_{d_n}(a,\varepsilon)=\{y\in X: d_n(x,y)\leq \varepsilon\}.$ Thus we see that $C(n,2\varepsilon)\leq S(n,\varepsilon).$
+\end{proof}
+
+We now show that $\lim_{n\to\infty} \log C(n,\varepsilon)/\log n$ exists. After that, since $C(n,\varepsilon)$ is monotonic in $\varepsilon$, the limit along $\varepsilon\to 0$ also exists. Thus $h_f$ is well-defined.
+
+\begin{lemma}
+$\lim_{n\to\infty} \frac{C(n,\varepsilon)}{n}$ exists.
+\end{lemma}
+
+\begin{proof}
+    Let $\sigma_1,\sigma_2$ be the open covers achieving $C(n,\varepsilon), C(m,\varepsilon)$, resp.
+
+    Let $U\in \sigma_1, V\in \sigma_2$. Consider $W=U\cap f^{-n}(V).$ Clearly, $W$ is open. Suppose that $W$ has $d_{m+n}$-diameter larger than $\varepsilon$. Then we can find $x,y\in W$ so that $d_{m+n}(x,y)>\varepsilon$. Then for some $0\leq k\leq m+n$, 
+    \[
+    d(f^k(x),f^k(y))>\varepsilon.
+    \]
+    If $k\leq n$, then from $x,y\in U$ we see that the above contradicts the fact that $U$ has $d_n$-diameter at most $\varepsilon$. If $k>n$, then from $x,y\in f^{-n}(V)$, we see that $f^n(x),f^{n}(y)\in V$. Since $d(f^{k-n}(f^n(x)),f^{k-n}(f^n(y)))>\varepsilon,$ we see that $f^{n}(x), f^{n}(y)$ contradicts the fact that $V$ has $d_m$-diameter at most $\varepsilon.$ From here, we conclude that $W$ has $d_{m+n}$-diameter at most $\varepsilon$.
+
+    There are $C(n,\varepsilon)$ many choices of $U$ and $C(m,\varepsilon)$ many choices of $V$. Thus, we can list at most $C(n,\varepsilon)C(m,\varepsilon)$ many choices of $W$ (the inequality can be strict as some $W$ might be empty). Thus, we see that
+    \[
+    C(m+n,\varepsilon)\leq C(n,\varepsilon)C(m,\varepsilon).
+    \]
+    Therefore, we have
+    \[
+    \log C(m+n,\varepsilon)\leq  \log C(n,\varepsilon)+\log C(m,\varepsilon).
+    \]
+    The convergence is due to a standard lemma in analysis.
+\end{proof}
+
+\begin{lemma}[Fekete]\label{lma: Fekete}
+    Let $\{a_n\}_{n\geq 1}$ be a sequence of non-negative numbers. Suppose that $a_{m+n}\leq a_n+a_m$ for all $m,n\in\mathbb{N}.$ Then $\lim_{n\to\infty} a_n/n$ exists.
+\end{lemma}
+\begin{proof}
+    Let $s=\liminf a_n/n$, $S=\limsup a_n/n$. We show that $s=S$. If this is not the case, then $S>s$.
+
+    Then for some $\varepsilon>0$, we find arbitrarily large $N$ so that $a_N/N>s+\varepsilon$. On the other hand, we can find some $M$ so that $a_M/M<s+0.01\varepsilon$. Since there are infinitely many such $N$, there are infinitely many such $N$ that are congruent in $\mod M$. Let $N_1<N_2$ be two such $N$. Then we have
+    \[
+    a_{N_2}\leq a_{N_2-M}+a_M\leq a_{N_2-2M}+2a_M\leq\dots\leq a_{N_1}+M^{-1}(N_2-N_1)a_M<a_{N_1}+(N_2-N_1)(s+0.01\varepsilon).
+    \]
+
+    We can choose $N_1,N_2$ in such a way that $N_1$ is fixed and $N_2$ can be arbitrarily large. Then we see that
+    \[
+    a_{N_2}/N_2<a_{N_1}/N_2+\frac{N_2-N_1}{N_2}(s+0.01\varepsilon)\to_{N_2\to\infty} s+0.01\varepsilon.
+    \]
+    Thus, we see that for some $N_2\to\infty$ so that along such choices of $N_2$,
+    \[
+    s+\varepsilon\leq \limsup_{N_2\to\infty}a_{N_2}/N_2\leq s+0.01\varepsilon.
+    \]
+    This is not possible.
+\end{proof}
+Fekete's lemma can be generalised a little bit. We will need the following result later.
+\begin{lemma}\label{lma: Fekete add constant}
+     Let $\{a_n\}_{n\geq 1}$ be a sequence of non-negative numbers. Suppose that $a_{m+n}\leq a_n+a_m+c$ for a constant $c\geq 0$, all $m,n\in\mathbb{N}.$ Then $\lim_{n\to\infty} a_n/n$ exists.
+\end{lemma}
+\begin{proof}
+    The proof is similar. We find that
+    \[
+    a_{N_2}\leq a_{N_1}+M^{-1}(N_2-N_1)a_M+M^{-1}(N_2-N_1)c<a_{N_1}+(N_2-N_1)(s+0.01\varepsilon)+M^{-1}(N_2-N_1)c.
+    \]
+    Since $M$ can be arbitrarily large, we can make sure that $c/M<0.001\varepsilon.$ Then we get
+    \[
+    s+\varepsilon\leq\limsup_{N_2\to\infty}a_{N_2}/N_2\leq s+0.01\varepsilon+c/M<s+0.011\varepsilon.
+    \]
+    The result follows.
+\end{proof}
+
+The definition of topological entropy $h_f$ involves the choice of metric $d(.,.)$. We show that, in fact, $h_f$ depends only on the topology.
+
+\begin{lemma}
+    The topological entropy $h_f$ for $f:X\to X$ depends only on the topology generated by $d(.,.)$.
+\end{lemma}
+\begin{proof}
+    Let $d_1=d,d_2$ be two possibly different metrics that generate the same topology. Let $\varepsilon>0$. We find $\delta=\delta_\varepsilon>0$ so that
+    \[
+    \delta=\sup\{d_2(x,y):d_1(x,y)\leq \varepsilon\}.
+    \]
+    We claim that $\delta\to 0$ as $\varepsilon\to 0.$ Suppose that this is not the case. Then we can find a sequence $x_n,y_n$ of pairs in $X$ and some $\delta_0>0$ so that
+    \[
+    d_1(x_n,y_n)\to 0
+    \]
+    and
+    \[
+    d_2(x_n,y_n)\geq \delta_0.
+    \]
+    By taking limit point of $x_n,y_n$, resp, we can find $x_\infty,y_\infty$ so that $d_1(x_\infty,y_\infty)=0$ but $d_2(x_\infty,y_\infty)\geq \delta_0$. This is not possible.
+
+    Let $C_1,C_2$ be as in the definition of the topological entropy w.r.t. $d_1,d_2$. From here, we see that $C_2(n,\delta_\varepsilon)\leq C_1(n,\varepsilon).$ Due to the definition of $h_f$, we have
+    \[
+    \lim_{\varepsilon\to 0}\lim_{n\to\infty} \frac{\log C_1(n,\varepsilon)}{n}\geq \lim_{\varepsilon\to 0}\lim_{n\to\infty} \frac{\log C_2(n,\delta_\varepsilon)}{n}=\lim_{\delta\to 0}\lim_{n\to\infty} \frac{\log C_2(n,\delta)}{n}.
+    \]
+    Switching the indices $1,2$, we achieve the equality in the above. Thus $h_f$ does not depend on the choice of metric.
+\end{proof}
+An important consequence is that topological entropy is indeed a topological invariant.
+\begin{theorem}
+    Topological entropy is a topological invariant.
+\end{theorem}
+\begin{proof}
+    Let $X,Y$ be topologically conjugate. Suppose that the homeomorphism $I:X\to Y$ achieves this conjugacy. Then $X$ and $I^{-1}(Y)$ are the same topological system, possibly with different metrics, but with the same topology. We see that they have the same topological entropy. Therefore, $X,Y$ have the same entropy.
+\end{proof}
+
+\begin{example}
+    Let $X=\{0,1\}^{\mathbb{Z}}$. Let $\sigma$ be the shift map. Then $h_\sigma=\log 2$.
+\end{example}
+\begin{example}
+    The doubling map has topological entropy $\log 2$.
+\end{example}
+\begin{example}
+    Circle rotations have zero entropy.
+\end{example}
+Later on, we will discuss circle homeomorphisms other than the rotations. For now, we show that they have zero entropy.
+\begin{theorem}
+    Circle homeomorphisms have zero entropy.
+\end{theorem}
+\begin{proof}
+    Let $(X,f)$ be the dynamical system in consideration. $X$ is the unit circle; we assume that it has length one. Since $f$ is a homeomorphism, we see that for some $\varepsilon>0$, as long as $d(x,y)\leq \varepsilon$, $d(f^{-1}(x),f^{-1}(y))\leq 0.001.$
+
+    We aim to upper bound $S(n,\varepsilon)$ for small $\varepsilon$. Observe that $S(0,\varepsilon)\leq 10/\varepsilon$.
+
+    Let $A_n=A(n,\varepsilon)$ be an $(n,\varepsilon)$-spanning set. Consider the finite set $f^{n+1}(A_n).$ This set may not be $\varepsilon$-dense. Let $A'$ be a finite set so that $f^{n+1}(A_n)\cup A'$ is $\varepsilon$-dense. Clearly, $|A'|\leq 10/\varepsilon.$
+
+    Consider $A_n\cup f^{-n-1}(A').$ We show that it is an $(n+1,\varepsilon)$-spanning set.
+    
+    Let $x\in X$. Then for some $y\in A_n$, we have
+    \[
+    d_n(x,y)\leq \epsilon.
+    \]
+    If $d(f^{n+1}(x),f^{n+1}(y))\leq \varepsilon$ then $d_{n+1}(x,y)\leq \varepsilon$ as required. Suppose that \[d(f^{n+1}(x),f^{n+1}(y))>\varepsilon.\] Since $d(f^n(x),f^n(y))\leq \epsilon$, we can find an arc $I$ \footnote{In fact, there are at most two arcs to be considered. One of those two arcs must satisfy our requirement.} connecting $f^{n+1}(x),f^{n+1}(y)$ such that $f^{-1}(I)$ has length at most $\varepsilon$. Then $f^{-2}(I)$ has length at most $0.001$. Observe that $f^{-2}(I)$ has endpoints $f^{n-1}(x),f^{n-1}(y).$ Given that $d(f^{n-1}(x),f^{n-1}(y))\leq \varepsilon$, we see that $f^{-2}(I)$ is either shorter than $\varepsilon$ or longer than $1-\varepsilon$. Clearly, if $\varepsilon$ is small enough, we can only have $f^{-2}(I)$ to have length at most $\varepsilon.$ Continue this argument, we see that
+    \[
+    |f^{i}(I)|\leq \varepsilon
+    \]
+    for $i\in\{-1,-2,\dots,-n-1\}.$ Now, inside $I$, we can find some $z\in A'$ so that $d(x,z)\leq \varepsilon$. This is due to the $\varepsilon$-density of $A'\cup f^{n+1}(A_n).$ Then $f^{i}(z)\in f^{i}(I)$ for $i\in\{-1,-2,\dots,-n-1\}.$ Thus $z'=f^{-n-1}(z)\in A_n\cup f^{-n-1}(A')$ has the property that
+    \[
+    d_{n+1}(x,z')\leq\varepsilon.
+    \]
+
+    We conclude that $S(n,\varepsilon)\leq 10n/\varepsilon.$ Therefore we see that
+    \[
+    h_f\leq \lim_{\varepsilon\to 0}\lim_{n\to\infty} \frac{\log (10n/\varepsilon)}{n}=0.
+    \]
+    This finishes the proof.
+\end{proof}
+We obtain the following direct consequence.
+\begin{corollary}
+    A Circle homeomorphism is not topologically conjugate to the full shift $(X,\sigma)$ on, say, $2$ symbols.
+\end{corollary}
 \section{Multiple recurrence}
 
-In the previous section we proved Birkhoff's Recurrence Theorem (Corollary \ref{birkhoff_rec_th}). In this section we study a generalisation of this result that applies to collections of maps. 
+In the previous section, we proved Birkhoff's Recurrence Theorem (Corollary \ref{birkhoff_rec_th}). In this section, we study a generalisation of this result that applies to collections of maps. 
 
 \begin{theorem}[Birkhoff's Multiple Recurrence Theorem]\label{thm.bmr}
 Suppose that $T_1, \ldots, T_n : X \to X$ are homeomorphisms of a compact metric space $(X,d)$ that pairwise commute (i.e. $T_iT_j = T_jT_i$ for each $0\le i,j \le n$). Then there exists $x\in X$ and a sequence of integers $n_j$ with $n_j \to \infty$ as $j\to\infty$ such that
@@ -1478,6 +1704,8 @@ Then the multiple recurrence follows due to this claim (same argument as the $n=
 \newpage
 
 \section{Sharkovsky's Theorem}
+\textbf{This section is not examinable 25-26}
+
 In this section $I$ will denote an interval $I = \{ x \in \mathbb{R} : a \le x \le  b\}$ for some $a,b\in \mathbb{R}$.
 Given an interval $I$ with a continuous function $f: I \to I$ we obtain a dynamical system $(I,f)$. 
 \begin{example}
@@ -1876,9 +2104,20 @@ We will split the proof into three parts. For $y \in \mathbb R$, $[y]$ will deno
 
 \medskip
 \noindent
-{\it Existence of the limit for $x=0$.}
+{\bf Existence of the limit for $x=0$.}
 For $n \ge 1$, let $k_n = [F^n(0)]$, so
-$k_n \le F^n(0) <  k_n +1$. We claim that, for any $m \ge 1$, we have
+$k_n \le F^n(0) <  k_n +1$. Then, for each $m\geq 0$, we see that 
+\[
+F^{m}(F^{n}(0))\leq F^m(k_n+1)\leq F^{m}(0)+k_n+1.
+\]
+We conclude that
+\[
+F^{m+n}(0)\leq F^{m}(0)+F^{n}(0)+1.
+\]
+We apply Lemma \ref{lma: Fekete add constant} to conclude that the limit exists for $x=0$.
+
+\begin{comment}
+We claim that, for any $m \ge 1$, we have
 \[
 mk_n \le F^{mn}(0) < m(k_n+1). \eqno(*)
 \]
@@ -1917,10 +2156,11 @@ Now let $\epsilon>0$. If $n,m \ge N > 2/\epsilon$ then
 \left|\frac{F^n(0)}{n} - \frac{F^m(0)}{m}\right| \le \frac{2}{N} < \epsilon.
 \]
 Hence, $F^n(0)/n$ is a Cauchy sequence and therefore it converges.
+\end{comment}
 
 \medskip
 \noindent
-{\it The limit exists for all $x$ and is independent of $x$.}
+{\bf The limit exists for all $x$ and is independent of $x$.}
 Since, for $n \ge 1$, the function $F^n$ is increasing, for any $y \in [0,1]$ we have that
 \[
 0 \le F^n(y)-F^n(0) \le F^n(1)-F^n(0) =1
@@ -1941,7 +2181,7 @@ The right hand side converges to zero as $n \to \infty$. Hence $F^n(x)/n$ conver
 
 \medskip
 \noindent
-{\it Independence of $\rho(f)$ on the choice of lift.}
+{\bf Independence of $\rho(f)$ on the choice of lift.}
 Let $\tilde F : \mathbb R \to \mathbb R$ be another lift of $f$. Then there exists $k \in \mathbb Z$ such that
 $\tilde F(x) = F(x)+k$, for all $x \in \mathbb R$.
 We see by induction that
@@ -1960,7 +2200,7 @@ i.e. $\rho(\tilde F)=\rho(F) + k$. Hence $\rho(f)=\rho(F)$ mod 1 is independent 
 
 \medskip
 \noindent
-{\it The orientation-reversing case.}
+{\bf The orientation-reversing case.}
 Now suppose $f$ is orientation-reversing and let $F$ be a lift of $f$. Then $f^2$ is orientation-preserving and $F^2$ is a lift, so we have that
 \[
 \lim_{n \to \infty} \frac{F^{2n}(x)}{2n} = \frac{1}{2}\lim_{n \to \infty} \frac{F^{2n}(x)}{n}
@@ -1980,7 +2220,9 @@ So
 \]
 exists and is independent of $x$.
 
-
+\medskip
+\noindent
+{\bf The irrelevance of the choice of lifts.}
 Finally we need to show that the limit is independent of the choice of lift.
 Let $\tilde F : \mathbb R \to \mathbb R$ be another lift of $f$. Then there exists $k \in \mathbb Z$ such that
 $\tilde F(x) = F(x)+k$, for all $x \in \mathbb R$.
@@ -2149,7 +2391,7 @@ T(F(x)) = T(x)+\rho \quad \text{for all} \ x \in \Lambda.
 \end{lemma}
 
 \begin{proof}[Proof of Lemma \ref{lemma_for_poincare}]
-Since $\rho$ is irrational, neither $f$ nor $R_\rho$ have periodic points. Therefore, the maps 
+We observe that $F$ is increasing. Otherwise, $f$ does not preserve the orientation and has fixed points. Thus $\rho$ cannot be irrational. Since $\rho$ is irrational, neither $f$ nor $R_\rho$ has periodic points. Therefore, the maps 
 $\mathbb Z^2 \to \Lambda$ and $\mathbb Z^2 \to \Omega$ defined by
 \[
 (m,n) \mapsto F^n(0) +m \quad \text{and} \quad (m,n) \mapsto n\rho +m,
@@ -2168,6 +2410,21 @@ Let $y = F^{n_2}(0)$. Then
 F^{n_1-n_2}(y) < y +m_2-m_1.
 \]
 
+Let $k$ be a positive integer. We apply $F^{n_1-n_2}$ to the above inequality $k$ times. If $n_1-n_2>0$, we see that
+\[
+F^{k(n_1-n_2)}(y)<y+k(m_2-m_1).
+\]
+Dividing $k(n_2-n_1)$ on both sides and let $\to\infty$, we see that
+\[
+\rho\leq \frac{m_2-m_1}{n_1-n_2}.
+\]
+The above inequality must be strict as $\rho$ is irrational. Thus, we must have the following strict inequality
+\[
+n_1\rho+m_1<n_2\rho+m_2.
+\]
+This is what needs to be proved. The case for $n_1-n_2<0$ is similar.
+
+\begin{comment}
 \smallskip
 \noindent
 {\it Claim.} Let $F^n(y)<y+m$ for some $y \in \mathbb R$, $n,m \in \mathbb Z$. If $n>0$ then
@@ -2197,7 +2454,7 @@ $\rho>(m_2-m_1)/(n_1-n_2)$. In both cases we have
 n_1\rho +m_1 < n_2\rho + m_2.
 \]
 So $T(F^{n_1}(0)+m_1)< T(F^{n_2}(0)+m_2)$ and $T$ is indeed strictly increasing.
-
+\end{comment}
 Finally, we prove the last two statements. Let $x=F^n(0)+m$, then $T(x) = n\rho +m$.
 Hence
 \begin{align*}
@@ -2263,6 +2520,10 @@ conjugating homeomorphism $h$. But, from the above discussion,
 it follows that the choice of $x_0$ defines $h$ uniquely.
 \end{remark}
 
+\begin{remark}
+    The key to establishing Poincar\'e's Theorem is the existence of a dense orbit for $f$ which can be put in the place of the orbit of $0$. Thus, the minimality requirement can be reduced to transitivity. 
+\end{remark}
+
 \medskip
 Without the minimality assumption, the following weaker result (which we will not prove) holds.
 
@@ -2301,7 +2562,7 @@ A continuous function $w : [0,1] \to \mathbb R$ has {\it bounded variation} if
 is finite.
 \end{definition}
 
-\begin{theorem} [Denjoy's Theorem, 1932]
+\begin{theorem} [Denjoy's Theorem, 1932]\label{thm: denjoy}
 Let $f : \mathbb T \to \mathbb T$ be a circle homeomorphism with irrational rotation number $\rho(f)$.
 If $f \in C^1(\mathbb T)$ and $w(x) = \log f'(x)$ has bounded variation then $f$ is topologically conjugate
 to $R_{\rho(f)}$.
@@ -2320,7 +2581,7 @@ the theorem.
 \begin{lemma} \label{lemma_for_denjoy1}
 Let $f : \mathbb T \to \mathbb T$ be a homeomorphism with an irrational rotation
 number. There is a sequence $n_k \uparrow \infty$ (i.e.monotone increasing and unbounded)
-such that, for any $x \in \mathbb T$, the intervals $(x_i, x_{i+n_k} )$ are disjoint, where $x_i = f^i(x)$
+such that, for any $x \in \mathbb T$, the intervals $(x_i, x_{i+n_k} )$ are disjoint and ordered cyclically, where $x_i = f^i(x)$
 and $0 \le i < n_k$, and $(x_i, x_{i+n_k} )$ is the shortest arc with the ends at $x_i$ and
 $x_{i+n_k}$.
 \end{lemma}
@@ -2427,7 +2688,7 @@ function theorem and the chain rule imply that
 \le \mathrm{var}(\log f').
 \end{align*}
 The last inequality uses that the intervals
-$(x_{i-n_k},x_i) = f^{-n_k}((x_i,x_{i+n_k}))$ are disjoint, which follows from Lemma 
+$(x_{i-n_k},x_i) = f^{-n_k}((x_i,x_{i+n_k}))$ are disjoint and ordered cyclically, which follows from Lemma 
 \ref{lemma_for_denjoy1}. Hence we have that
 \[
 |(f^{n_k})'(x) \, (f^{-n_k})'(x) |\ge \exp(-\mathrm{var}(\log f')).
@@ -2439,8 +2700,10 @@ Then Lemma \ref{lemma_for_denjoy2} implies that $f$ is minimal. Finally, Poincar
 Deduce that if $f$ is a $C^2$ diffeomorphism
 and has irrational rotation number then $f$ is topologically conjugate to an irrational rotation.
 
-
 \subsection{Wandering intervals and Denjoy's example}
+
+\textbf{This subsection is not examinable.}
+
 We say that an interval $I \subset \mathbb T$ is wandering if its iterates 
 $I, f(I), f^2(I), \ldots$
 are pairwise disjoint and $I$
@@ -3410,8 +3673,84 @@ and Gromov's famous theorem that a finitely generated group has polynomial growt
 if it has a finite index nilpotent subgroup, one of the great achievments of late twentieth 
 century mathematics.
 \end{remark}
+\subsection{An $\mathbb{N}^2$-expansion map: Furstenberg's theorem}
+We know that the ($\times k$) map has rich orbit structures. In particular, let $k=2$, we can find dense orbits, periodic orbits, as well as `fractal' orbits, e.g. take the collection of numbers whose binary expansion omits the $010$-pattern.
 
-\subsection{Shifts of finite type}
+The situation is dramatically different if we introduce a second expansion to the system.
+
+\begin{theorem}[Furstenberg]
+    Let $\alpha\in [0,1]$ be irrational. Consider the set $\Delta_{2,3}(\alpha)=\{2^k3^l\alpha\mod \mathbb{Z}\}_{k,l\geq 0}.$ Then $\Delta_{2,3}(\alpha)$ is dense.
+\end{theorem}
+Here, the choice of $2,3$ is not special. In fact, we can choose any two coprime integers bigger than one. The result of Furstenberg tells us that $\times 2, \times 3$ orbits are either finite (orbits of rationals) or dense. Thus, no `fractal' orbits exist. The $\times 2, \times 3$ system is naturally a dynamical system indexed (or timed) by $\mathbb{N}^2$, which is different from the systems we have considered so far, whose index is $\mathbb{Z}$ or $\mathbb{N}$.
+
+\begin{lemma}
+Let $A\subset\mathbb{T}$ be forward invariant under $\times 2, \times 3$, i.e. if $y\in A$ then $2y, 3y\mod\mathbb{Z}\in A$. If $0$ is a non-isolated limit point of $A$, then $A$ is dense. Moreover, if $p/q$ is a rational point which is a non-isolated limit of $A$, then $A$ is dense.
+\end{lemma}
+\begin{proof}
+    We can find a sequence $a_i\in A$ so that $a_i\to 0$. Let $0<a<\varepsilon$ be one of those $a_i$'s where $\varepsilon$ can be arbitrarily small.
+
+    We now consider $a$ as a real number instead of in $\mathbb{T}$. Consider the following sequence of real numbers
+    \[
+    2^k3^l a,k,l\geq 0.
+    \]
+    We take $\log$ to the above reals and obtain
+    \[
+    k\log 2+l\log 3+\log a,k,l\geq 0.
+    \]
+    Ignore the $\log a$ for now and perform a scaling, we obtain
+    \[
+    k \frac{\log 2}{\log 3}+l,k,l\geq 0.
+    \]
+    Since $\log 2/\log 3$ is irrational, we obtain from the theory of irrational circle rotation that for any $\delta>0$, there is some $M>0$ so that
+    \[
+    \{k \frac{\log 2}{\log 3}+l: k,l\geq 0\}\cap [M\infty)
+    \]
+    is $\delta$-dense in the sense that any interval of length $\delta$ in $[M,\infty)$ contain some number \[k\log 2/\log 3+l.\]
+
+    Since $a$ can be arbitrarily small, we can make sure that
+    \[
+    \{k\log 2+l\log 3+\log a,k,l\geq 0\}\cap [0,\infty)
+    \]
+    is $\delta$-dense. We take the $\exp$ to above and conclude that $2^k3^la$ is $\delta'$-dense in $[0,1]$ where $\delta'>0$ depends on the choice of $\delta$. Moreover, $\delta'$ can be made arbitrarily small once $\delta$ is small, once $a$ is small. Therefore, we conclude that $A$ itself must be $\delta'$-dense. By taking $\delta'\to 0$, we conclude that $A$ is dense.
+
+    If $A$ has a non-isolated rational limit $p/q$, then we can assume that $2,3$ do not divide $q$. For some integers $s,t\geq 1$ we have
+    \[
+    2^s=3^t=1\mod q.
+    \]
+    We consider $\times 2^s,\times 3^t$ maps. They fix $p/q$. We see that $A$ must be dense by using the same argument as if $p/q=0.$
+\end{proof}
+\begin{proof}[Proof of Furstenberg's theorem]
+Let $A$ be an infinite, closed and $\times 2,\times 3$ invariant set. Consider the difference set
+\[
+A-A=\{a-b:a\in A,b\in A\}.
+\]
+Observe that $A-A$ is closed and $\times 2,\times 3$ invariant and $0$ is a non-isolated limit point of $A-A$ as long as $A$ is an infinite set. We conclude that $A-A$ is $[0,1].$ Thus for any $c\in (0,1)$, the set
+\[
+A_c=\{a\in A: a+c\in A\}
+\]
+is closed and non-empty. Let us take $c=1/5$. Observe that $2^4=3^4=1\mod 5$. We consider $\times 2^4, \times 3^4$ orbits for $A_{1/5}.$ Observe that if $y\in A_{1/5}$ then $2^4 y, 3^4 y\mod \mathbb{Z}\in A_{1/5}.$ Thus if $A_{1/5}$ is finite, then it contains rational points and therefore $A_{1/5}$ is dense. Therefore, we assume that $A_{1/5}$ is infinite.
+
+We can then use the above argument again and conclude that $A_{1/5}-A_{1/5}$ is $[0,1].$ We can find
+\[
+A_{1/5,1/5}=\{a\in A_{1/5}:a+1/5\in A_{1/5}\}.
+\]
+Then $A_{1/5,1/5}$ is closed and non-empty, invariant under $\times 2^4,\times 3^4.$ If $a\in A_{1/5,1/5}$, then $a+1/5\in A_{1/5}$, then $a+1/5+1/5\in A.$ Thus we find a triple
+\[
+a,a+1/5,a+2/5\in A.
+\]
+We can now perform the above argument finitely many times and find $a\in A$ so that
+\[
+a+1/5,a+2/5,a+3/5,a+4/5\in A.
+\]
+Here, the choice of $1/5$ is not special. We can choose $1/5^r$ for $r\geq 1.$ Thus, as above, we find
+\[
+a,a+1/5^r,\dots,a+({5^r}-1)/5^r\in A.
+\]
+From here we conclude that $A$ must be $[0,1].$
+
+Finally, observe that $\overline{\Delta_{2,3}(\alpha)}$ is closed, infinite (because $\alpha$ is irrational) and invariant under $\times 2, \times 3$. Thus we see that $\Delta_{2,3}(\alpha)$ is dense.
+\end{proof}
+\section{Symbolic dynamics}
 
 It is now an opportune time to introduce symbolic dynamical systems which generalizations of the full shifts considered earlier.
 
